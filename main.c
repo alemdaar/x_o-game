@@ -21,6 +21,8 @@ typedef struct s_info
     t_data c1;
     t_data c2;
     t_data c3;
+    int position_x;
+    int position_y;
 }   t_info;
 
 char getch() {
@@ -40,17 +42,19 @@ char getch() {
 
 int display(t_info *info)
 {
-    info->a1.data = 'X';
     printf ("||=====||=====||=====||\n");
-    printf ("||* %c *||  %c  ||  %c  ||\n", info->a1, info->a2, info->a3);
+    printf ("||%c %c %c||%c %c %c||%c %c %c||\n", info->a1.here, info->a1.data, info->a1.here, 
+        info->a2.here, info->a2.data, info->a2.here, info->a3.here, info->a3.data, info->a3.here);
     printf ("||=====||=====||=====||\n");
-    printf ("||  %c  ||  %c  ||  %c  ||\n", info->b1, info->b2, info->b3);
+    printf ("||%c %c %c||%c %c %c||%c %c %c||\n", info->b1.here, info->b1.data, info->b1.here, 
+        info->b2.here, info->b2.data, info->b2.here, info->b3.here, info->b3.data, info->b3.here);
     printf ("||=====||=====||=====||\n");
-    printf ("||  %c  ||  %c  ||  %c  ||\n", info->c1, info->c2, info->c3);
+    printf ("||%c %c %c||%c %c %c||%c %c %c||\n", info->c1.here, info->c1.data, info->c1.here, 
+        info->c2.here, info->c2.data, info->c2.here, info->c3.here, info->c3.data, info->c3.here);
     printf ("||=====||=====||=====||\n");
 }
 
-int empty_info(t_info *info)
+int init_info(t_info *info)
 {
     info->a1.data = ' ';
     info->a2.data = ' ';
@@ -61,48 +65,78 @@ int empty_info(t_info *info)
     info->c1.data = ' ';
     info->c2.data = ' ';
     info->c3.data = ' ';
-    info->a1.here = 1;
-    info->a2.here = 0;
-    info->a3.here = 0;
-    info->b1.here = 0;
-    info->b2.here = 0;
-    info->b3.here = 0;
-    info->c1.here = 0;
-    info->c2.here = 0;
-    info->c3.here = 0;
+    //
+    info->a1.here = ' ';
+    info->a2.here = ' ';
+    info->a3.here = ' ';
+    info->b1.here = ' ';
+    info->b2.here = '*'; // select starts in here
+    info->b3.here = ' ';
+    info->c1.here = ' ';
+    info->c2.here = ' ';
+    info->c3.here = ' ';
+    //
+    info->position_x = 1;
+    info->position_y = 1;
 }
 
+int move_select(t_info *info, int x, int y)
+{
+    if (info->position_x + x > 2 && info->position_x + x < 0)
+        return (printf ("those are the limits, you cant skip pass the boarders !\n"), 1);
+    else if (info->position_y + y > 2 && info->position_y + y < 0)
+        return (printf ("those are the limits, you cant skip pass the boarders !\n"), 1);
+    info->position_x = x;
+    info->position_y = y;
+    return (0);
+}
 int main() {
     t_info info;
-    empty_info(&info);
-    display(&info);
-    // return (0);
-    // char c;
+    init_info(&info);
+    char c;
+    
+    printf("Press any key (arrow keys or q to quit):\n\n");
+    display(&info);    
+    while (1) {
+        c = getch();
+        
+        if (c == 27) { // Escape character
+            char second = getch(); // should be '['
+            char third = getch();  // actual arrow code
+            
+            if (second == '[') {
+                if (third == 'A')
+                {
+                    printf("Up arrow pressed\n");
+                    move_select(&info, 0, 1);
+                }
+                else if (third == 'B')
+                {
+                    move_select(&info, 0, -1);
+                    printf("Down arrow pressed\n");
+                }
+                else if (third == 'C')
+                {
+                    printf("Right arrow pressed\n");
+                    move_select(&info, 1, 0);
+                }
+                else if (third == 'D')
+                {
+                    printf("Left arrow pressed\n");
+                    move_select(&info, -1, 0);
+                }
+                else
+                {
+                    printf("Unknown escape sequence\n");
+                }
+            }
+        } else {
+            printf("You pressed: %c\n", c);
+            printf("ASCII code : %d\n", c);
+            if (c == 'q') break;
+        }
+        display(&info);
+    }
 
-    // printf("Press any key (arrow keys or q to quit):\n");
-
-    // while (1) {
-    //     c = getch();
-
-    //     if (c == 27) { // Escape character
-    //         char second = getch(); // should be '['
-    //         char third = getch();  // actual arrow code
-
-    //         if (second == '[') {
-    //             switch (third) {
-    //                 case 'A': printf("Up arrow pressed\n"); break;
-    //                 case 'B': printf("Down arrow pressed\n"); break;
-    //                 case 'C': printf("Right arrow pressed\n"); break;
-    //                 case 'D': printf("Left arrow pressed\n"); break;
-    //                 default: printf("Unknown escape sequence\n"); break;
-    //             }
-    //         }
-    //     } else {
-    //         printf("You pressed: %c\n", c);
-    //         printf("ASCII code : %d\n", c);
-    //         if (c == 'q') break;
-    //     }
-    // }
-
-    // return 0;
+    return 0;
 }
