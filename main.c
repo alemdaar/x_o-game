@@ -41,6 +41,7 @@ void init_select(t_info *info)
     // this one will let the select starts in the middle -> line 1 and line 1
     info->select_position_x = 1;
     info->select_position_y = 1;
+    info->square[info->select_position_y][info->select_position_x].here = '*';
 }
 int init_info(t_info *info)
 {
@@ -73,9 +74,11 @@ int move_select(t_info *info, int x, int y)
     info->square[info->select_position_y][info->select_position_x].here = ' ';
     info->select_position_x += x;
     info->select_position_y += y;
+    info->square[info->select_position_y][info->select_position_x].here = '*';
     return (0);
 }
 int main() {
+    system ("clear");
     t_info info;
     init_info(&info);
     char c;
@@ -87,7 +90,7 @@ int main() {
         printf ("position y: %d\n", info.select_position_y);
         
         c = getch();
-        
+        system ("clear");
         if (c == 27) { // Escape character
             char second = getch(); // should be '['
             char third = getch();  // actual arrow code
@@ -96,11 +99,11 @@ int main() {
                 if (third == 'A')
                 {
                     printf("Up arrow pressed\n");
-                    move_select(&info, 0, 1);
+                    move_select(&info, 0, -1);
                 }
                 else if (third == 'B')
                 {
-                    move_select(&info, 0, -1);
+                    move_select(&info, 0, 1);
                     printf("Down arrow pressed\n");
                 }
                 else if (third == 'C')
@@ -124,6 +127,7 @@ int main() {
             if (c == 'q') break;
         }
         display(&info);
+
     }
 
     return 0;
