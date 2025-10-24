@@ -4,26 +4,7 @@
 #include <termios.h>
 #include "library.h"
 
-typedef struct s_data
-{
-    char data;
-    int here;
-}   t_data;
 
-typedef struct s_info
-{
-    t_data a1;
-    t_data a2;
-    t_data a3;
-    t_data b1;
-    t_data b2;
-    t_data b3;
-    t_data c1;
-    t_data c2;
-    t_data c3;
-    int position_x;
-    int position_y;
-}   t_info;
 
 char getch() {
     struct termios oldt, newt;
@@ -43,51 +24,55 @@ char getch() {
 int display(t_info *info)
 {
     printf ("||=====||=====||=====||\n");
-    printf ("||%c %c %c||%c %c %c||%c %c %c||\n", info->a1.here, info->a1.data, info->a1.here, 
-        info->a2.here, info->a2.data, info->a2.here, info->a3.here, info->a3.data, info->a3.here);
-    printf ("||=====||=====||=====||\n");
-    printf ("||%c %c %c||%c %c %c||%c %c %c||\n", info->b1.here, info->b1.data, info->b1.here, 
-        info->b2.here, info->b2.data, info->b2.here, info->b3.here, info->b3.data, info->b3.here);
-    printf ("||=====||=====||=====||\n");
-    printf ("||%c %c %c||%c %c %c||%c %c %c||\n", info->c1.here, info->c1.data, info->c1.here, 
-        info->c2.here, info->c2.data, info->c2.here, info->c3.here, info->c3.data, info->c3.here);
-    printf ("||=====||=====||=====||\n");
+    int i = 0;
+    while (i < LEN_SQUARES)
+    {
+        printf ("||%c %c %c||%c %c %c||%c %c %c||\n", info->square[i][0].here, info->square[i][0].data, info->square[i][0].here, 
+                                                      info->square[i][1].here, info->square[i][1].data, info->square[i][1].here, 
+                                                      info->square[i][2].here, info->square[i][2].data, info->square[i][2].here);
+        printf ("||=====||=====||=====||\n");
+        i++;
+    }
+    return 0;
 }
 
+void init_select(t_info *info)
+{
+    // this one will let the select starts in the middle -> line 1 and line 1
+    info->select_position_x = 1;
+    info->select_position_y = 1;
+}
 int init_info(t_info *info)
 {
-    info->a1.data = ' ';
-    info->a2.data = ' ';
-    info->a3.data = ' ';
-    info->b1.data = ' ';
-    info->b2.data = ' ';
-    info->b3.data = ' ';
-    info->c1.data = ' ';
-    info->c2.data = ' ';
-    info->c3.data = ' ';
-    //
-    info->a1.here = ' ';
-    info->a2.here = ' ';
-    info->a3.here = ' ';
-    info->b1.here = ' ';
-    info->b2.here = '*'; // select starts in here
-    info->b3.here = ' ';
-    info->c1.here = ' ';
-    info->c2.here = ' ';
-    info->c3.here = ' ';
-    //
-    info->position_x = 1;
-    info->position_y = 1;
+    t_data *tmp;
+
+    // now we will considere everything as an embpty box and set everything to space
+    int i = 0;
+    while (i < 3)
+    {
+        int j = 0;
+        while (j < 3)
+        {
+            info->square[i][j].data = ' ';
+            info->square[i][j].here = ' ';
+            j++;
+        }
+
+        i++;
+    }
+    init_select(info);
+    return 0;
 }
 
 int move_select(t_info *info, int x, int y)
 {
-    if (info->position_x + x > 2 && info->position_x + x < 0)
+    if (info->select_position_x + x > 2 || info->select_position_x + x < 0)
         return (printf ("those are the limits, you cant skip pass the boarders !\n"), 1);
-    else if (info->position_y + y > 2 && info->position_y + y < 0)
+    if (info->select_position_y + y > 2 || info->select_position_y + y < 0)
         return (printf ("those are the limits, you cant skip pass the boarders !\n"), 1);
-    info->position_x = x;
-    info->position_y = y;
+    info->square[info->select_position_y][info->select_position_x].here = ' ';
+    info->select_position_x += x;
+    info->select_position_y += y;
     return (0);
 }
 int main() {
@@ -98,6 +83,9 @@ int main() {
     printf("Press any key (arrow keys or q to quit):\n\n");
     display(&info);    
     while (1) {
+        printf ("position x: %d\n", info.select_position_x);
+        printf ("position y: %d\n", info.select_position_y);
+        
         c = getch();
         
         if (c == 27) { // Escape character
