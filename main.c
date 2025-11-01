@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <termios.h>
 #include "library.h"
-
+#include <fcntl.h>
 
 
 char getch() {
@@ -80,17 +80,132 @@ int move_select(t_info *info, int x, int y)
     return (0);
 }
 
-// int winning_algo(t_info *info)
-// {
-//     int x = info->select_position_x;
-//     int y= info->select_position_y;
-//     if (x + 1 < 3) // check if he is out of the square
-//     {
-//         // 79  O || 88  X
-//         if (info->square[y][x+1].data == '')
-        
-//     }
-// }
+int winning_algo(t_info *info)
+{
+    int debug = open ("file", O_RDWR | O_APPEND);
+    if (debug == -1)
+    {
+        printf ("r failed !\n");
+        exit (1);
+    }
+    int check = 1;
+    int angle = 1;
+    int x = info->select_position_x;
+    int y= info->select_position_y;
+    int i;
+    dprintf (debug, "dkhal n game!\n");
+    // dprintf (debug, "x = !\n");
+    if (y - 1 > 0) // check if he is out of the square
+    {
+        dprintf (debug, "y - 1 > 0\n");
+        // 79  O || 88  X
+        dprintf (debug, "DEBUG : '%c' == '%c'\n", info->square[y - 1][x].data, info->turn);
+        if (info->square[y - 1][x].data == info->turn)
+        {
+            dprintf (debug, "info->square[y - 1][x].data == info->turn\n");
+            if (y == 2)
+            {
+                dprintf (debug, "y == 2\n");
+                if (info->square[y - 2][x].data == info->turn)
+                {
+                    dprintf (debug, "info->square[y - 2][x].data == info->turn\n");
+                    display(info);    
+                    printf ("player '%c' WON !!!!!\n", info->turn);
+                    exit(0);
+                }
+            }
+            else
+            {
+                dprintf (debug, "else -> y == 2\n");
+                if (info->square[y + 1][x].data == info->turn)
+                {
+                    dprintf (debug, "info->square[y + 1][x].data == info->turn\n");
+                    display(info);    
+                    printf ("player '%c' WON !!!!!\n", info->turn);
+                    exit(0);
+                }
+            }
+        }
+    }
+    else
+    {
+        dprintf (debug, "else y - 1 > 0!\n");
+        i = 1;
+        while (i <= 2)
+        {
+            if (info->square[y + i][x].data != info->turn)
+            {
+                dprintf (debug, "while info->square[y + i][x].data != info->turn\n");
+                break;
+            }
+            i++;
+        }
+        dprintf (debug, "i : %d\n", i);
+        if (i == 3)
+        {
+            dprintf (debug, "i == 3\n");
+            display(info);    
+            printf ("player '%c' WON !!!!!\n", info->turn);
+            exit(0);
+        }
+    }
+    // x ->
+    if (x - 1 > 0) // check if he is out of the square
+    {
+        // dprintf (debug, "x - 1 > 0\n");
+        // 79  O || 88  X
+        // dprintf (debug, "DEBUG : '%c' == '%c'\n", info->square[y - 1][x].data, info->turn);
+        if (info->square[y][x - 1].data == info->turn)
+        {
+            // dprintf (debug, "info->square[y - 1][x].data == info->turn\n");
+            if (x == 2)
+            {
+                // dprintf (debug, "y == 2\n");
+                if (info->square[y][x - 2].data == info->turn)
+                {
+                    // dprintf (debug, "info->square[y - 2][x].data == info->turn\n");
+                    display(info);    
+                    printf ("player '%c' WON !!!!!\n", info->turn);
+                    exit(0);
+                }
+            }
+            else
+            {
+                // dprintf (debug, "else -> y == 2\n");
+                if (info->square[y][x + 1].data == info->turn)
+                {
+                    // dprintf (debug, "info->square[y + 1][x].data == info->turn\n");
+                    display(info);    
+                    printf ("player '%c' WON !!!!!\n", info->turn);
+                    exit(0);
+                }
+            }
+        }
+    }
+    else
+    {
+        // dprintf (debug, "else y - 1 > 0!\n");
+        i = 1;
+        while (i <= 2)
+        {
+            if (info->square[y][x + i].data != info->turn)
+            {
+                // dprintf (debug, "while info->square[y + i][x].data != info->turn\n");
+                break;
+            }
+            i++;
+        }
+        // dprintf (debug, "i : %d\n", i);
+        if (i == 3)
+        {
+            // dprintf (debug, "i == 3\n");
+            display(info);    
+            printf ("player '%c' WON !!!!!\n", info->turn);
+            exit(0);
+        }
+    }
+    return (0);
+}
 
 int hit_enter(t_info *info)
 {
@@ -99,16 +214,13 @@ int hit_enter(t_info *info)
     if (info->turn == 'X')
     {
         info->square[info->select_position_y][info->select_position_x].data = 'X';
-        info->turn = 'X' + 'O' - 'X';
         info->reached_3_hits ++;
     }
     else
-    {
         info->square[info->select_position_y][info->select_position_x].data = 'O';
-        info->turn = 'X' + 'O' - 'O';
-    }
-    // if (info->reached_3_hits >= 3)
-    // winning_algo (info);
+    if (info->reached_3_hits >= 3)
+        winning_algo (info);
+    info->turn = 'X' + 'O' - info->turn;
     return (0);
 }
 
@@ -118,13 +230,15 @@ int main() {
     init_info(&info);
     char c;
     
+    system ("clear");
     printf("Press any key (arrow keys or q to quit):\n\n\n");
-    display(&info);    
+    c = getch();
     while (1) {
-        printf ("position x: %d\n", info.select_position_x);
-        printf ("position y: %d\n", info.select_position_y);
-        c = getch();
+        // printf ("position x: %d\n", info.select_position_x);
+        // printf ("position y: %d\n", info.select_position_y);
         system ("clear");
+        display(&info);    
+        c = getch();
         if (c == 27)
         {
             char second = getch();
@@ -164,10 +278,9 @@ int main() {
         }
         else if (c == '\n')
         {
+            system ("clear");
             hit_enter(&info);
         }
-        display(&info);
     }
-
     return 0;
 }
