@@ -1,39 +1,52 @@
 dkhal n game!
+y - 1 > 0
+DEBUG : ' ' == 'X'
+x - 1 > 0
+DEBUG : 'O' == 'X'
+1
+2
+3
+dkhal n game!
+y - 1 > 0
+DEBUG : ' ' == 'X'
+x - 1 > 0
+DEBUG : 'O' == 'X'
+1
+2
+3
+dkhal n game!
+y - 1 > 0
+DEBUG : ' ' == 'X'
+x - 1 > 0
+DEBUG : 'O' == 'X'
+1
+2
+3
+4
+dkhal n game!
+else y - 1 > 0!
+while info->square[y + i][x].data != info->turn
+i : 1
+x - 1 > 0
+DEBUG : ' ' == 'X'
+7
+8
+dkhal n game!
+y - 1 > 0
+DEBUG : 'X' == 'O'
+x - 1 > 0
+DEBUG : 'X' == 'O'
+1
+dkhal n game!
 else y - 1 > 0!
 i : 3
 i == 3
 dkhal n game!
-else y - 1 > 0!
-while info->square[y + i][x].data != info->turn
-i : 1
-dkhal n game!
-y - 1 > 0
-DEBUG : ' ' == 'O'
-dkhal n game!
 y - 1 > 0
 DEBUG : ' ' == 'X'
-dkhal n game!
-y - 1 > 0
-DEBUG : ' ' == 'X'
-dkhal n game!
-else y - 1 > 0!
-while info->square[y + i][x].data != info->turn
-i : 1
-dkhal n game!
-else y - 1 > 0!
-i : 3
-i == 3
-dkhal n game!
-else y - 1 > 0!
-while info->square[y + i][x].data != info->turn
-i : 1
-dkhal n game!
-else y - 1 > 0!
-while info->square[y + i][x].data != info->turn
-i : 1
-dkhal n game!
-y - 1 > 0
-DEBUG : 'X' == 'X'
-info->square[y - 1][x].data == info->turn
-y == 2
-info->square[y - 2][x].data == info->turn
+x - 1 > 0
+DEBUG : 'O' == 'X'
+1
+2
+3
+4
