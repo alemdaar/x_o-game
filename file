@@ -50,3 +50,11 @@ DEBUG : 'O' == 'X'
 2
 3
 4
+dkhal n game!
+y - 1 > 0
+DEBUG : ' ' == 'X'
+x - 1 > 0
+DEBUG : 'X' == 'X'
+info->square[y][x - 1].data == info->turn
+x == 2
+info->square[y][x - 2].data == info->turn

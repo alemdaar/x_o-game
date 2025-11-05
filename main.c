@@ -1,5 +1,18 @@
 #include "library.h"
 
+size_t mystrlen(char *str)
+{
+    size_t i = 0;
+    while (str[i])
+        i++;
+    return (i);
+}
+
+void clear_screen(void)
+{
+    system ("clear");
+    return ;
+}
 
 char getch() {
     struct termios oldt, newt;
@@ -18,20 +31,15 @@ char getch() {
 
 int display(t_info *info)
 {
-    system ("clear");
-    char spaces[59];
-    int i = 0;
-    while (i < 58)
-        spaces[i++] = ' ';
-    spaces[i] = 0;
+    clear_screen();
     printf ("\n\n\n\n\n\n\n\n\n");
-    printf ("%s||===============||===============||===============||%s\n", spaces, spaces);
-    i = 0;
+    printf ("%s||===============||===============||===============||%s\n", info->centerlized_spaces, info->centerlized_spaces);
+    int i = 0;
     while (i < LEN_SQUARES)
     {
-        printf ("%s||               ||               ||               ||%s\n", spaces, spaces);
+        printf ("%s||               ||               ||               ||%s\n", info->centerlized_spaces, info->centerlized_spaces);
         // //   
-        printf ("%s||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||%s\n", spaces, 
+        printf ("%s||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||%s\n", info->centerlized_spaces, 
                                                                                                           info->square[i][0].here, info->square[i][0].here, info->square[i][0].here, 
                                                                                                           info->square[i][0].here, info->square[i][0].here, info->square[i][0].here, 
                                                                                                           info->square[i][0].here, info->square[i][0].here, info->square[i][0].here, 
@@ -41,27 +49,27 @@ int display(t_info *info)
                                                                                                           info->square[i][2].here, info->square[i][2].here, info->square[i][2].here, 
                                                                                                           info->square[i][2].here, info->square[i][2].here, info->square[i][2].here, 
                                                                                                           info->square[i][2].here, info->square[i][2].here, info->square[i][2].here, 
-                                                                                                          spaces);
+                                                                                                          info->centerlized_spaces);
         // //   
-        printf ("%s||   %c       %c   ||   %c       %c   ||   %c       %c   ||%s\n", spaces, 
+        printf ("%s||   %c       %c   ||   %c       %c   ||   %c       %c   ||%s\n", info->centerlized_spaces, 
                                                                                      info->square[i][0].here, info->square[i][0].here,
                                                                                      info->square[i][1].here, info->square[i][1].here,
                                                                                      info->square[i][2].here, info->square[i][2].here,
-                                                                                     spaces);
+                                                                                     info->centerlized_spaces);
         // //   
-        printf ("%s||   %c   %c   %c   ||   %c   %c   %c   ||   %c   %c   %c   ||%s\n",  spaces,
+        printf ("%s||   %c   %c   %c   ||   %c   %c   %c   ||   %c   %c   %c   ||%s\n",  info->centerlized_spaces,
                                                                                          info->square[i][0].here, info->square[i][0].data, info->square[i][0].here, 
                                                                                          info->square[i][1].here, info->square[i][1].data, info->square[i][1].here, 
                                                                                          info->square[i][2].here, info->square[i][2].data, info->square[i][2].here,
-                                                                                         spaces);
+                                                                                         info->centerlized_spaces);
         // //   
-        printf ("%s||   %c       %c   ||   %c       %c   ||   %c       %c   ||%s\n", spaces, 
+        printf ("%s||   %c       %c   ||   %c       %c   ||   %c       %c   ||%s\n", info->centerlized_spaces, 
                                                                                      info->square[i][0].here, info->square[i][0].here,
                                                                                      info->square[i][1].here, info->square[i][1].here,
                                                                                      info->square[i][2].here, info->square[i][2].here,
-                                                                                     spaces);
+                                                                                     info->centerlized_spaces);
         // //   
-        printf ("%s||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||%s\n", spaces, 
+        printf ("%s||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||   %c%c%c%c%c%c%c%c%c   ||%s\n", info->centerlized_spaces, 
                                                                                                           info->square[i][0].here, info->square[i][0].here, info->square[i][0].here, 
                                                                                                           info->square[i][0].here, info->square[i][0].here, info->square[i][0].here, 
                                                                                                           info->square[i][0].here, info->square[i][0].here, info->square[i][0].here, 
@@ -71,11 +79,11 @@ int display(t_info *info)
                                                                                                           info->square[i][2].here, info->square[i][2].here, info->square[i][2].here, 
                                                                                                           info->square[i][2].here, info->square[i][2].here, info->square[i][2].here, 
                                                                                                           info->square[i][2].here, info->square[i][2].here, info->square[i][2].here, 
-                                                                                                          spaces);
+                                                                                                          info->centerlized_spaces);
         // //   
-        printf ("%s||               ||               ||               ||%s\n", spaces, spaces);
+        printf ("%s||               ||               ||               ||%s\n", info->centerlized_spaces, info->centerlized_spaces);
         //  // //
-        printf ("%s||===============||===============||===============||%s\n", spaces, spaces);
+        printf ("%s||===============||===============||===============||%s\n", info->centerlized_spaces, info->centerlized_spaces);
         i++;
     }
     printf ("here : %d\n", info->square[0][2].here);
@@ -89,6 +97,42 @@ void init_select(t_info *info)
     info->select_position_y = 1;
     info->square[info->select_position_y][info->select_position_x].here = '*';
 }
+
+void free_heap(t_info *info)
+{
+    if (info->centerlized_spaces != NULL) // because if it equals null it means either we didnt initialize it yet or it returned an error
+    {
+        free (info->centerlized_spaces); // we free it, means that memory space/place isnt taken anymore and available to use , but the data still there, means if we allocated again and malloc gave us this address, we will realize that the data hold in each byte still the same
+        info->centerlized_spaces = NULL; /*now I set the variable to null for several reasons :
+                                             -> the variable now points on no address
+                                             -> if I tried to free the variable again i will know that this variable doesnt have any address in its value, so it means eitehr just initialized or already freed
+                                            */
+    }
+}
+void handle_error(t_info *info, const char *err_msg)
+{
+    char nls[] = "\n\n\n\n\n";
+    int i;
+
+    clear_screen();
+    write (2, &err_msg[i], 1);
+    i = 0;
+    while (i < mystrlen(info->centerlized_spaces))
+        write (2, &err_msg[i], 1);
+    free_heap(info);
+    exit (-1);
+}
+
+void init_centerlized_spaces(t_info *info)
+{
+    info->centerlized_spaces = malloc (side_spaces + null_term_place);
+    if (info->centerlized_spaces == NULL)
+        handle_error(info, err_msg_malloc);
+    int i = 0;
+    while (i < 58)
+        info->centerlized_spaces[i++] = ' ';
+    info->centerlized_spaces[i] = 0;
+}
 int init_info(t_info *info)
 {
     t_data *tmp;
@@ -100,16 +144,17 @@ int init_info(t_info *info)
         int j = 0;
         while (j < 3)
         {
-            info->square[i][j].data = ' ';
-            info->square[i][j].here = ' ';
+            info->square[i][j].data = ' '; // im setting all data to space, so it means the board is empty from x and o
+            info->square[i][j].here = ' '; // im setting the select to space so it means theres no select yet
             j++;
         }
 
         i++;
     }
-    info->turn = 'X';
-    info->reached_3_hits = 0;
-    init_select(info);
+    info->turn = 'X'; // making sure that the player that has first turn is 'X'
+    info->reached_3_hits = 0; // making sure that the variable that sees if the first player reached 3 hits, so i can start checking the winning algo
+    init_select(info); // init the the select with '*'s
+    init_centerlized_spaces(info); // init spaces that will make the game in center
     return 0;
 }
 
@@ -128,23 +173,16 @@ int move_select(t_info *info, int x, int y)
 
 int remove_select(t_info *info)
 {
-    printf ("removed x : %d", info->select_position_x);
-    printf ("removed y : %d", info->select_position_y);
     info->square[info->select_position_y][info->select_position_y].here = 32;
     return (0);
 }
 
-// int someone_won(t_info *info)
-// {
-//     remove_select(info);
-//     while (1)
-//     {
-//         while ()
-//         {
+void someone_won(t_info *info)
+{
+    clear_screen();
+    printf ("\n\n\n\n\n\n\n\n\n\n\n%splayer '%c' WON !!!!!\n", info->centerlized_spaces, info->turn);
+}
 
-//         }
-//     }
-// }
 void vertical_check(t_info *info, int x, int y, int debug)
 {
     int tmp = 0;
@@ -152,18 +190,13 @@ void vertical_check(t_info *info, int x, int y, int debug)
 
     if (y - 1 >= 0) // check if he is out of the square
     {
-        dprintf (debug, "y - 1 > 0\n");
-        // 79  O || 88  X
-        dprintf (debug, "DEBUG : '%c' == '%c'\n", info->square[y - 1][x].data, info->turn);
+        // 79 is O in ascii || 88 is X in ascii 
         if (info->square[y - 1][x].data == info->turn)
         {
-            dprintf (debug, "info->square[y - 1][x].data == info->turn\n");
             if (y == 2)
             {
-                dprintf (debug, "y == 2\n");
                 if (info->square[y - 2][x].data == info->turn)
                 {
-                    dprintf (debug, "info->square[y - 2][x].data == info->turn\n");
                     remove_select (info);
                     display(info);
                     tmp = 0;
@@ -174,10 +207,8 @@ void vertical_check(t_info *info, int x, int y, int debug)
             }
             else
             {
-                dprintf (debug, "else -> y == 2\n");
                 if (info->square[y + 1][x].data == info->turn)
                 {
-                    dprintf (debug, "info->square[y + 1][x].data == info->turn\n");
                     remove_select (info);
                     display(info);    
                     tmp = 0;
@@ -190,7 +221,6 @@ void vertical_check(t_info *info, int x, int y, int debug)
     }
     else
     {
-        dprintf (debug, "else y - 1 > 0!\n");
         i = 1;
         while (i <= 2)
         {
@@ -198,7 +228,6 @@ void vertical_check(t_info *info, int x, int y, int debug)
             {
                 if (info->square[y + i][x].data != info->turn)
                 {
-                    dprintf (debug, "while info->square[y + i][x].data != info->turn\n");
                     break;
                 }
             }
@@ -206,10 +235,8 @@ void vertical_check(t_info *info, int x, int y, int debug)
                 return;
             i++;
         }
-        dprintf (debug, "i : %d\n", i);
         if (i == 3)
         {
-            dprintf (debug, "i == 3\n");
             remove_select (info);
             display(info);    
             tmp = 0;
@@ -227,18 +254,13 @@ void horizontal_check(t_info *info, int x, int y, int debug)
     // x ->
     if (x - 1 >= 0) // check if he is out of the square
     {
-        dprintf (debug, "x - 1 > 0\n");
         // 79  O || 88  X
-        dprintf (debug, "DEBUG : '%c' == '%c'\n", info->square[y][x - 1].data, info->turn);
         if (info->square[y][x - 1].data == info->turn)
         {
-            dprintf (debug, "info->square[y][x - 1].data == info->turn\n");
             if (x == 2)
             {
-                dprintf (debug, "x == 2\n");
                 if (info->square[y][x - 2].data == info->turn)
                 {
-                    dprintf (debug, "info->square[y][x - 2].data == info->turn\n");
                     remove_select (info);
                     display(info);    
                     tmp = 0;
@@ -249,10 +271,8 @@ void horizontal_check(t_info *info, int x, int y, int debug)
             }
             else
             {
-                dprintf (debug, "else -> x == 2\n");
                 if (info->square[y][x + 1].data == info->turn)
                 {
-                    dprintf (debug, "info->square[y][x + 1].data == info->turn\n");
                     remove_select (info);
                     display(info);    
                     tmp = 0;
@@ -265,7 +285,6 @@ void horizontal_check(t_info *info, int x, int y, int debug)
     }
     else
     {
-        dprintf (debug, "else x - 1 > 0!\n");
         i = 1;
         while (i <= 2)
         {
@@ -273,7 +292,6 @@ void horizontal_check(t_info *info, int x, int y, int debug)
             {
                 if (info->square[y][x + i].data != info->turn)
                 {
-                    dprintf (debug, "while info->square[y][x + i].data != info->turn\n");
                     break;
                 }
             }
@@ -281,10 +299,8 @@ void horizontal_check(t_info *info, int x, int y, int debug)
                 return;
             i++;
         }
-        dprintf (debug, "i : %d\n", i);
         if (i == 3)
         {
-            dprintf (debug, "i == 3\n");
             remove_select (info);
             display(info);    
             tmp = 0;
@@ -301,21 +317,13 @@ void xypp_check(t_info *info, int x, int y, int debug)
 
     if (x - 1 >= 0 && y - 1 >= 0) // check if he is out of the square
     {
-        dprintf (debug, "1\n");
         // 79  O || 88  X
-        // dprintf (debug, "DEBUG : '%c' == '%c'\n", info->square[y][x - 1].data, info->turn);
         if (info->square[y - 1][x - 1].data == info->turn)
         {
-            dprintf (debug, "2\n");
-            // dprintf (debug, "info->square[y][x - 1].data == info->turn\n");
             if (x == 2 && y == 2)
             {
-                dprintf (debug, "3\n");
-                // dprintf (debug, "x == 2\n");
                 if (info->square[y - 2][x - 2].data == info->turn)
                 {
-                    dprintf (debug, "4\n");
-                    // dprintf (debug, "info->square[y][x - 2].data == info->turn\n");
                     remove_select (info);
                     display(info);    
                     tmp = 0;
@@ -326,12 +334,8 @@ void xypp_check(t_info *info, int x, int y, int debug)
             }
             else if (x == 1 && y == 1)
             {
-                dprintf (debug, "5\n");
-                // dprintf (debug, "else -> x == 2\n");
                 if (info->square[y + 2][x + 1].data == info->turn)
                 {
-                    dprintf (debug, "6\n");
-                    // dprintf (debug, "info->square[y][x + 1].data == info->turn\n");
                     remove_select (info);
                     display(info);    
                     tmp = 0;
@@ -344,17 +348,13 @@ void xypp_check(t_info *info, int x, int y, int debug)
     }
     else
     {
-        // dprintf (debug, "else x - 1 > 0!\n");
-        dprintf (debug, "7\n");
         i = 1;
         while (i <= 2)
         {
-            dprintf (debug, "8\n");
             if (x >= 0 && x < 3 && y >= 0 && y < 3)
             {
                 if (info->square[y + i][x + i].data != info->turn)
                 {
-                    // dprintf (debug, "while info->square[y][x + i].data != info->turn\n");
                     break;
                 }
             }
@@ -362,11 +362,8 @@ void xypp_check(t_info *info, int x, int y, int debug)
                 return;
             i++;
         }
-        // dprintf (debug, "i : %d\n", i);
         if (i == 3)
         {
-            dprintf (debug, "9\n");
-            // dprintf (debug, "i == 3\n");
             remove_select (info);
             display(info);    
             tmp = 0;
@@ -384,21 +381,13 @@ void xyop_check(t_info *info, int x, int y, int debug)
 
     if (x - 1 >= 0 && y + 1 >= 0) // check if he is out of the square
     {
-        dprintf (debug, "1\n");
         // 79  O || 88  X
-        // dprintf (debug, "DEBUG : '%c' == '%c'\n", info->square[y][x - 1].data, info->turn);
         if (info->square[y + 1][x - 1].data == info->turn)
         {
-            dprintf (debug, "2\n");
-            // dprintf (debug, "info->square[y][x - 1].data == info->turn\n");
             if (x == 2 && y == 0)
             {
-                dprintf (debug, "3\n");
-                // dprintf (debug, "x == 2\n");
                 if (info->square[y + 2][x - 2].data == info->turn)
                 {
-                    dprintf (debug, "4\n");
-                    // dprintf (debug, "info->square[y][x - 2].data == info->turn\n");
                     remove_select (info);
                     display(info);    
                     tmp = 0;
@@ -409,12 +398,8 @@ void xyop_check(t_info *info, int x, int y, int debug)
             }
             else if (x == 1 && y == 1)
             {
-                dprintf (debug, "5\n");
-                // dprintf (debug, "else -> x == 2\n");
                 if (info->square[y - 1][x + 1].data == info->turn)
                 {
-                    dprintf (debug, "6\n");
-                    // dprintf (debug, "info->square[y][x + 1].data == info->turn\n");
                     remove_select (info);
                     display(info);    
                     tmp = 0;
@@ -427,17 +412,13 @@ void xyop_check(t_info *info, int x, int y, int debug)
     }
     else
     {
-        // dprintf (debug, "else x - 1 > 0!\n");
-        dprintf (debug, "7\n");
         i = 1;
         while (i <= 2)
         {
-            dprintf (debug, "8\n");
             if (x >= 0 && x < 3 && y >= 0 && y < 3)
             {
                 if (info->square[y - i][x + i].data != info->turn)
                 {
-                    // dprintf (debug, "while info->square[y][x + i].data != info->turn\n");
                     break;
                 }
             }
@@ -445,11 +426,8 @@ void xyop_check(t_info *info, int x, int y, int debug)
                 return;
             i++;
         }
-        // dprintf (debug, "i : %d\n", i);
         if (i == 3)
         {
-            dprintf (debug, "9\n");
-            // dprintf (debug, "i == 3\n");
             remove_select (info);
             display(info);    
             tmp = 0;
@@ -473,12 +451,10 @@ int winning_algo(t_info *info)
     int x = info->select_position_x;
     int y = info->select_position_y;
 
-    dprintf (debug, "dkhal n game!\n");
     vertical_check(info, x, y, debug);
     horizontal_check(info, x, y, debug);
     xypp_check(info, x, y, debug);
     xyop_check(info, x, y, debug);
-    // dprintf (debug, "x = !\n");
 
     
     return (0);
@@ -513,20 +489,23 @@ int hit_enter(t_info *info)
     return (0);
 }
 
+void pop_up(const char *msg, t_info *info)
+{
+    int i = 0;
+    while (i < mystrlen((char *)msg))
+        write (1, &msg[i++], 1);
+    return ;
+}
 int main() {
     t_info info;
-    init_info(&info);
     char c;
-    
-    system ("clear");
-    printf("Press any key (arrow keys or q to quit):\n\n\n");
+
+    init_info(&info);
+    clear_screen();
+    pop_up(msg_press_key, &info);
     getch();
     while (1) {
-        // printf ("position x: %d\n", info.select_position_x);
-        // printf ("position y: %d\n", info.select_position_y);
         display(&info);    
-        // printf (".....\n");
-        // while (1);
         c = getch();
         if (c == 27)
         {
