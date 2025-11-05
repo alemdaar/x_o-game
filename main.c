@@ -86,7 +86,6 @@ int display(t_info *info)
         printf ("%s||===============||===============||===============||%s\n", info->centerlized_spaces, info->centerlized_spaces);
         i++;
     }
-    printf ("here : %d\n", info->square[0][2].here);
     return 0;
 }
 
@@ -545,10 +544,7 @@ int main() {
             }
         }
         else if (c == '\n')
-        {
-            // system ("clear");
             hit_enter(&info);
-        }
     }
     return 0;
 }
