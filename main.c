@@ -99,7 +99,7 @@ void init_select(t_info *info)
 
 void free_heap(t_info *info)
 {
-    if (info->centerlized_spaces != NULL) // because if it equals null it means either we didnt initialize it yet or it returned an error
+    if (info->centerlized_spaces == NULL) // because if it equals null it means either we didnt initialize it yet or it returned an error
     {
         free (info->centerlized_spaces); // we free it, means that memory space/place isnt taken anymore and available to use , but the data still there, means if we allocated again and malloc gave us this address, we will realize that the data hold in each byte still the same
         info->centerlized_spaces = NULL; /*now I set the variable to null for several reasons :
@@ -182,7 +182,7 @@ void someone_won(t_info *info)
     printf ("\n\n\n\n\n\n\n\n\n\n\n%splayer '%c' WON !!!!!\n", info->centerlized_spaces, info->turn);
 }
 
-void vertical_check(t_info *info, int x, int y, int debug)
+void vertical_check(t_info *info, int x, int y)
 {
     int tmp = 0;
     int i;
@@ -246,7 +246,7 @@ void vertical_check(t_info *info, int x, int y, int debug)
     }
 }
 
-void horizontal_check(t_info *info, int x, int y, int debug)
+void horizontal_check(t_info *info, int x, int y)
 {
     int tmp = 0;
     int i;
@@ -309,7 +309,7 @@ void horizontal_check(t_info *info, int x, int y, int debug)
         }
     }
 }
-void xypp_check(t_info *info, int x, int y, int debug)
+void xypp_check(t_info *info, int x, int y)
 {
     int tmp = 0;
     int i = 0;
@@ -373,7 +373,7 @@ void xypp_check(t_info *info, int x, int y, int debug)
     }
 }
 
-void xyop_check(t_info *info, int x, int y, int debug)
+void xyop_check(t_info *info, int x, int y)
 {
     int tmp = 0;
     int i = 0;
@@ -439,21 +439,15 @@ void xyop_check(t_info *info, int x, int y, int debug)
 
 int winning_algo(t_info *info)
 {
-    int debug = open ("file", O_RDWR | O_APPEND);
-    if (debug == -1)
-    {
-        printf ("r failed !\n");
-        exit (1);
-    }
     int check = 1;
     int angle = 1;
     int x = info->select_position_x;
     int y = info->select_position_y;
 
-    vertical_check(info, x, y, debug);
-    horizontal_check(info, x, y, debug);
-    xypp_check(info, x, y, debug);
-    xyop_check(info, x, y, debug);
+    vertical_check(info, x, y);
+    horizontal_check(info, x, y);
+    xypp_check(info, x, y);
+    xyop_check(info, x, y);
 
     
     return (0);
@@ -471,20 +465,14 @@ int hit_enter(t_info *info)
 {
     if (info->square[info->select_position_y][info->select_position_x].data != ' ')
         return (DIDNT_HIT_3);
-    if (info->turn == 'X')
-    {
-        info->square[info->select_position_y][info->select_position_x].data = 'X';
-        info->reached_3_hits ++;
-        if (info->reached_3_hits == 5)
-            end_game(info);
-    }
-    else
-    {
-        info->square[info->select_position_y][info->select_position_x].data = 'O';
-    }
+    info->square[info->select_position_y][info->select_position_x].data = info->turn;
+    info->reached_3_hits ++;
+    if (info->reached_3_hits == 5)
+        end_game(info);
+    info->turn = 'X' + 'O' - info->turn;
+    nextmove(info, ai);
     if (info->reached_3_hits >= 3)
         winning_algo (info);
-    info->turn = 'X' + 'O' - info->turn;
     return (0);
 }
 
@@ -497,6 +485,7 @@ void pop_up(const char *msg, t_info *info)
 }
 int main() {
     t_info info;
+    t_ai ai;
     char c;
 
     init_info(&info);
@@ -544,7 +533,7 @@ int main() {
             }
         }
         else if (c == '\n')
-            hit_enter(&info);
+            hit_enter(&info, &ai);
     }
     return 0;
 }

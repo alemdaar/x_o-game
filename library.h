@@ -8,11 +8,12 @@
 #include <termios.h>
 #include <fcntl.h>
 
-#define TRUE 1
-#define FALsE 0
-#define succesfull 0
-#define failed 1
+#define LAST_POSSIB_STRC -44
 #define ERROR -1
+#define FALSE 0
+#define SUCCESS 0
+#define TRUE 1
+#define failed 1
 #define DIDNT_HIT_3 33
 #define side_spaces 58
 #define null_term_place 58
@@ -40,10 +41,29 @@ typedef struct s_info
     char *centerlized_spaces;
 }   t_info;
 
+typedef struct s_possibilities
+{
+    int x;
+    int y;
+    int count;
+    int success;
+    int draw;
+    int lose;
+    char **buffer[500][9];
+
+}   t_possibilities;
+
+typedef struct s_ai
+{
+    int size;
+    t_possibilities possib[8];
+}   t_ai;
+
+
 
 
 int display();
-
+int nextmove(t_info * info, t_ai *ai);
 
 
 #endif
