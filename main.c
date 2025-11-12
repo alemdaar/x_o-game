@@ -461,7 +461,7 @@ void end_game(t_info *info)
     exit (22);
 }
 
-int hit_enter(t_info *info)
+int hit_enter(t_info *info, t_ai *ai)
 {
     if (info->square[info->select_position_y][info->select_position_x].data != ' ')
         return (DIDNT_HIT_3);
