@@ -15,10 +15,13 @@
 #define FALSE 0
 #define SUCCESS 0
 #define TRUE 1
-#define failed 1
+#define FAILED 1
 #define FINISH_VER 5
 #define FINISH_HOR 6
-#define FINISH_X 7
+#define FINISH_XRD 7
+#define FINISH_XRU 8
+#define ATTACK 9
+#define DEFENSE 10
 #define DIDNT_HIT_3 33
 #define side_spaces 58
 #define null_term_place 58
@@ -34,8 +37,8 @@
 // structs
 typedef struct s_data
 {
-    char data;
     int here;
+    char data;
 }   t_data;
 
 typedef struct s_info
@@ -75,6 +78,9 @@ typedef struct s_ai
     t_possibilities possib[8]; // the next 8 possible ways that I have agains that first move
     t_cord first_move; // this is the first move that the user will move
     t_cord finish_him; //the variable that contains xo of the next move to win the game
+    t_cord defense; //the variable that contains xo of the next move to defense
+    t_cord prev; //the variable that contains xo of the next move to defense
+    t_data square[3][3];
     int size;
 }   t_ai;
 
@@ -86,3 +92,11 @@ int nextmove(t_info * info, t_ai *ai);
 
 
 #endif
+
+
+
+   |   |   
+---|---|---
+   | X |   
+---|---|---
+   |   |   

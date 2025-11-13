@@ -1,18 +1,19 @@
 #include "library.h"
-void init_xy_imagine(t_ai *ai, t_info *info)
-{
-    int i = 0;
-    while (i < 3)
-    {
-        int j = 0;
-        while (j < 3)
-        {
-            if ()
-            j++;
-        }
-        i++;
-    }
-}
+
+// void init_xy_imagine(t_ai *ai, t_info *info)
+// {
+//     int i = 0;
+//     while (i < 3)
+//     {
+//         int j = 0;
+//         while (j < 3)
+//         {
+//             if ()
+//             j++;
+//         }
+//         i++;
+//     }
+// }
 
 void init_imagine(t_ai *ai, t_info *info)
 {
@@ -24,7 +25,7 @@ void init_imagine(t_ai *ai, t_info *info)
     }
 }
 
-int vertical_finish(t_info *info, t_ai *ai)
+int vertical_finish(t_info *info, t_ai *ai, int fight)
 {
     t_cord last;
     int i = 0;
@@ -58,8 +59,16 @@ int vertical_finish(t_info *info, t_ai *ai)
         }
         if (filled == 2 && empty == 1)
         {
-            ai->finish_him.x = last.x;
-            ai->finish_him.y = last.y;
+            if (fight == ATTACK)
+            {
+                ai->finish_him.x = last.x;
+                ai->finish_him.y = last.y;
+            }
+            else if (fight == DEFENSE)
+            {
+                ai->defense.x = last.x;
+                ai->defense.y = last.y;
+            }
             return (FINISH_VER);
         }
         filled = 0;
@@ -69,7 +78,7 @@ int vertical_finish(t_info *info, t_ai *ai)
     return (0);
 }
 
-int horizontal_finish(t_info *info, t_ai *ai)
+int horizontal_finish(t_info *info, t_ai *ai, int fight)
 {
     t_cord last;
     int i = 0;
@@ -103,8 +112,16 @@ int horizontal_finish(t_info *info, t_ai *ai)
         }
         if (filled == 2 && empty == 1)
         {
-            ai->finish_him.x = last.x;
-            ai->finish_him.y = last.y;
+            if (fight == ATTACK)
+            {
+                ai->finish_him.x = last.x;
+                ai->finish_him.y = last.y;
+            }
+            else if (fight == DEFENSE)
+            {
+                ai->defense.x = last.x;
+                ai->defense.y = last.y;
+            }
             return (FINISH_HOR);
         }
         filled = 0;
@@ -114,7 +131,7 @@ int horizontal_finish(t_info *info, t_ai *ai)
     return (0);
 }
 
-int xrd_finish(t_info *info, t_ai *ai)
+int xrd_finish(t_info *info, t_ai *ai, int fight)
 {
     t_cord last;
     int filled = 0;
@@ -146,8 +163,16 @@ int xrd_finish(t_info *info, t_ai *ai)
     }
     if (filled == 2 && empty == 1)
     {
-        ai->finish_him.x = last.x;
-        ai->finish_him.y = last.y;
+        if (fight == ATTACK)
+        {
+            ai->finish_him.x = last.x;
+            ai->finish_him.y = last.y;
+        }
+        else if (fight == DEFENSE)
+        {
+            ai->defense.x = last.x;
+            ai->defense.y = last.y;
+        }
         return (FINISH_XRD);
     }
     filled = 0;
@@ -155,38 +180,113 @@ int xrd_finish(t_info *info, t_ai *ai)
     return (0);
 }
 
+int xru_finish(t_info *info, t_ai *ai, int fight)
+{
+    t_cord last;
+    int filled = 0;
+    int empty = 0;
+
+    if (info->square[2][0].data == 'O')
+        filled += 1;
+    else if (info->square[2][0].data == ' ')
+    {
+        last.x = 0;
+        last.y = 0;
+        empty += 1;
+    }
+    if (info->square[1][2].data == 'O')
+        filled += 1;
+    else if (info->square[1][2].data == ' ')
+    {
+        last.x = 0;
+        last.y = 1;
+        empty += 1;
+    }
+    if (info->square[0][2].data == 'O')
+        filled += 1;
+    else if (info->square[0][2].data == ' ')
+    {
+        last.x = 0;
+        last.y = 2;
+        empty += 1;
+    }
+    if (filled == 2 && empty == 1)
+    {
+        if (fight == ATTACK)
+        {
+            ai->finish_him.x = last.x;
+            ai->finish_him.y = last.y;
+        }
+        else if (fight == DEFENSE)
+        {
+            ai->defense.x = last.x;
+            ai->defense.y = last.y;
+        }
+        return (FINISH_XRU);
+    }
+    filled = 0;
+    empty = 0;
+    return (0);
+}
 
 int check_win(t_info *info, t_ai *ai)
 {
-    vertical_finish(info, ai);
-    horizontal_finish(info, ai);
-    xypp_finish(info, ai);
+    if (vertical_finish(info, ai, ATTACK) == FINISH_VER)
+        return (SUCCESS);
+    if (horizontal_finish(info, ai, ATTACK) == FINISH_HOR)
+        return (SUCCESS);
+    if (xrd_finish(info, ai, ATTACK) == FINISH_XRD)
+        return (SUCCESS);
+    if (xru_finish(info, ai, ATTACK) == FINISH_VER)
+        return (SUCCESS);
+    return (FAILED);
 }
 
-int check_defense()
+int check_defense(t_info *info, t_ai *ai)
 {
-
+    if (vertical_finish(info, ai, DEFENSE) == FINISH_VER)
+        return (SUCCESS);
+    if (horizontal_finish(info, ai, DEFENSE) == FINISH_HOR)
+        return (SUCCESS);
+    if (xrd_finish(info, ai, DEFENSE) == FINISH_XRD)
+        return (SUCCESS);
+    if (xru_finish(info, ai, DEFENSE) == FINISH_VER)
+        return (SUCCESS);
+    return (FAILED);
 }
 
-int best_move()
+int random_move(t_info *info, t_ai *ai)
 {
+    int i = 0;
+    while (ai->)
+    {
 
+    }
 }
 
-int expectaions(int index, t_info *info, t_ai *ai, int size)
+void expectaions(int index, t_info *info, t_ai *ai, int size)
 {
-    check_win(info, ai);
-    check_defense();
-    best_move();
+    if (info->reached_3_hits == 2)
+    {
+        if (check_win(info, ai) == SUCCESS)
+            return ;
+        if (check_win(info, ai) == SUCCESS)
+            return ;
+    }
+    random_move();
 }
 
 int imagine(t_info *info, t_ai *ai)
 {
     init_imagine(ai, info);
+    ai->prev.x = 0;
+    ai->prev.y = 0;
     int i = 0;
     while (i < ai->size)
     {
         expectaions(i, info, ai, ai->size);
         i++;
     }
+    decide_nextmove(info, ai);
+    best_move(info, ai);
 }
