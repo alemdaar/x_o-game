@@ -237,7 +237,7 @@ int check_defense(t_info *info, t_ai *ai)
 
 // random_move
 
-t_cord next_place_in_order(t_ai *ai, t_info *info)
+t_cord next_place_in_order(t_info *info)
 {
     t_cord index;
     int i = 0;
@@ -262,16 +262,18 @@ t_cord next_place_in_order(t_ai *ai, t_info *info)
 
 void expectaions(t_cord index, t_info *info, t_ai *ai, int size)
 {
-    if (info->reached_3_hits == 2)
+    if (size == 0)
+        return;
+    if (info->reached_3_hits >= 2)
     {
         if (check_win(info, ai) == SUCCESS)
             return ;
-        if (check_win(info, ai) == SUCCESS)
+        if (check_defense(info, ai) == SUCCESS)
             return ;
     }
-    t_cord tmpnext_place_in_order(ai, info);
-    t_cord index = next_place(ai, info);
-    expectaions(index, info, ai, size);
+    t_cord index = next_place_in_order(info->tmp_square);
+    expectaions(index, info, ai, size - 1);
+    return ;
 }
 
 int imagine(t_info *info, t_ai *ai)
@@ -293,7 +295,7 @@ int imagine(t_info *info, t_ai *ai)
     int i = 0;
     while (i < ai->size)
     {
-        t_cord index = next_place(ai, info);
+        t_cord index = next_place_in_order(info->square);
         expectaions(index, info, ai, ai->size);
         i++;
     }

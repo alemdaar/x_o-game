@@ -70,7 +70,7 @@ typedef struct s_possibilities
 {
     t_cord cord;
     t_stats stats;
-    t_data buffer[5040];
+    t_cord buffer[5040];
     int index;
 }   t_possibilities;
 
