@@ -1,28 +1,8 @@
 #include "library.h"
 
-// void init_xy_imagine(t_ai *ai, t_info *info)
-// {
-//     int i = 0;
-//     while (i < 3)
-//     {
-//         int j = 0;
-//         while (j < 3)
-//         {
-//             if ()
-//             j++;
-//         }
-//         i++;
-//     }
-// }
-
 void init_imagine(t_ai *ai, t_info *info)
 {
-    int i = 0;
-    while (i < 8)
-    {
-        init_xy_imagine(ai, info, i);
-        i++;
-    }
+    // 
 }
 
 int vertical_finish(t_info *info, t_ai *ai, int fight)
@@ -255,16 +235,32 @@ int check_defense(t_info *info, t_ai *ai)
     return (FAILED);
 }
 
-int random_move(t_info *info, t_ai *ai)
-{
-    int i = 0;
-    while (ai->)
-    {
+// random_move
 
+t_cord next_place_in_order(t_ai *ai, t_info *info)
+{
+    t_cord index;
+    int i = 0;
+    while (i < LEN_SQUARES)
+    {
+        int j = 0;
+        while (j < LEN_SQUARES)
+        {
+            if (info->square[i][j].data == ' ') {
+                index.y = i;
+                index.x = j;
+                return (index);
+            }
+            j++;
+        }
+        i++;
     }
+    index.y = -1;
+    index.x = -1;
+    return (index);
 }
 
-void expectaions(int index, t_info *info, t_ai *ai, int size)
+void expectaions(t_cord index, t_info *info, t_ai *ai, int size)
 {
     if (info->reached_3_hits == 2)
     {
@@ -273,18 +269,32 @@ void expectaions(int index, t_info *info, t_ai *ai, int size)
         if (check_win(info, ai) == SUCCESS)
             return ;
     }
-    random_move();
+    t_cord tmpnext_place_in_order(ai, info);
+    t_cord index = next_place(ai, info);
+    expectaions(index, info, ai, size);
 }
 
 int imagine(t_info *info, t_ai *ai)
 {
     init_imagine(ai, info);
+    int i = 0;
+    while (i < 2)
+    {
+        int j = 0;
+        while (j < 2)
+        {
+            info->tmp_square[i][j].data = info->square[i][j].data;
+            j++;
+        }
+        i++;
+    }
     ai->prev.x = 0;
     ai->prev.y = 0;
     int i = 0;
     while (i < ai->size)
     {
-        expectaions(i, info, ai, ai->size);
+        t_cord index = next_place(ai, info);
+        expectaions(index, info, ai, ai->size);
         i++;
     }
     decide_nextmove(info, ai);

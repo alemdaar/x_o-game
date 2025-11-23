@@ -44,11 +44,12 @@ typedef struct s_data
 typedef struct s_info
 {
     t_data square[3][3];
+    t_data tmp_square[3][3];
+    char *centerlized_spaces;
     int select_position_x;
     int select_position_y;
     char turn;
     int reached_3_hits;
-    char *centerlized_spaces;
 }   t_info;
 
 typedef struct s_stats
@@ -69,7 +70,7 @@ typedef struct s_possibilities
 {
     t_cord cord;
     t_stats stats;
-    char buffer[5040][9];
+    t_data buffer[5040];
     int index;
 }   t_possibilities;
 
@@ -95,8 +96,8 @@ int nextmove(t_info * info, t_ai *ai);
 
 
 
-   |   |   
----|---|---
-   | X |   
----|---|---
-   |   |   
+//    |   |   
+// ---|---|---
+//    | X |   
+// ---|---|---
+//    |   |   
